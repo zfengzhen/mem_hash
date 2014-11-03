@@ -1107,7 +1107,7 @@ uint32_t MemHash::Crc32GetSummedPloys(uint32_t top_byte)
 	uint32_t summed_ploys = top_byte << 24;
 
 	for (int i = 0; i < 8; i++) {
-		uint32_t top_bit = (summed_ploys >> 31) && 0x01;
+		uint32_t top_bit = (summed_ploys >> 31) & 0x01;
 		summed_ploys = summed_ploys << 1;
 
 		if (top_bit == 0x01)
@@ -1122,7 +1122,7 @@ uint32_t MemHash::Crc32Compute(const char* data, int len)
 	uint32_t reg = 0;
 
 	for(int i = 0; i < len; i++) {
-		reg = (reg << 8) ^ crc32_table[data[i] ^ ((reg >> 24) && 0xFF)];
+		reg = (reg << 8) ^ crc32_table[(data[i] ^ ((reg >> 24)) & 0xFF)];
 	}       
 
 	return reg;
@@ -1133,7 +1133,7 @@ uint32_t MemHash::Crc32Append(uint32_t crc32, const char* data, int len)
 	uint32_t reg = crc32;
 
 	for(int i = 0; i < len; i++) {
-		reg = (reg << 8) ^ crc32_table[data[i] ^ ((reg >> 24) && 0xFF)];
+		reg = (reg << 8) ^ crc32_table[(data[i] ^ ((reg >> 24)) & 0xFF)];
 	}       
 
 	return reg;
